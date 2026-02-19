@@ -9,14 +9,12 @@ interface TaskCardProps {
 export default function TaskCard({ task, onComplete }: TaskCardProps) {
     const isLocked = task.lockedUntil && new Date() < task.lockedUntil;
 
-    // Enhanced priority styles with background and border accents
     const priorityStyles: Record<string, string> = {
         Low: "bg-emerald-50 text-emerald-700 border-emerald-100",
         Medium: "bg-amber-50 text-amber-700 border-amber-100",
         High: "bg-rose-50 text-rose-700 border-rose-100",
     };
 
-    // Border color based on priority for the left accent bar
     const accentColors: Record<string, string> = {
         Low: "border-l-emerald-400",
         Medium: "border-l-amber-400",

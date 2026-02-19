@@ -6,39 +6,27 @@ export const useTaskStore = create<TaskState>()(
   persist(
     (set, get) => ({
       tasks: [],
-
-      // Replace all tasks
-      setTasks: (tasks) => set({ tasks }),
-
-      // Add new task
       addTask: (task) => {
         const newTasks = [task, ...get().tasks];
         set({ tasks: newTasks });
       },
-
-      // Complete a task with rules
       completeTask: (id) => {
         set({
           tasks: get().tasks.map((t) => {
             if (t.id !== id) return t;
 
             const now = new Date();
-
-            // Rule 2: Locked task
             if (t.lockedUntil && now < t.lockedUntil) {
               alert("Hint: Time must pass.");
               return t;
             }
 
-            // Rule 1: High priority depends on Low priority completed
             const priorityOrder: Record<Priority, Priority | null> = {
               Low: null,
               Medium: "Low",
               High: "Medium",
             };
-
             const requiredPriority = priorityOrder[t.priority];
-
             if (requiredPriority) {
               const hasCompleted = get().tasks.some(
                 (task) => task.priority === requiredPriority && task.completed
@@ -49,16 +37,13 @@ export const useTaskStore = create<TaskState>()(
               }
             }
 
-            // Rule 3: Odd minute restriction
             const createdMinute = t.createdAt.getMinutes();
-            const timeElapsed = (now.getTime() - t.createdAt.getTime()) / 60000; // elapsed minutes
-
+            const timeElapsed = (now.getTime() - t.createdAt.getTime()) / 60000;
             if (createdMinute % 2 === 1 && timeElapsed > t.estimatedTime) {
               alert("Hint: Time has slipped away.");
-              return t; // refuse to complete because allotted time passed
+              return t;
             }
 
-            // Rule 4: Hidden refusal
             if (Math.random() < 0.1) {
               alert("Hint: Not all doors open.");
               return t;

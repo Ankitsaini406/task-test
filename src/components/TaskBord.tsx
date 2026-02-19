@@ -15,7 +15,6 @@ export default function TaskBoard() {
     const [priority, setPriority] = useState<Priority>("Low");
     const [estimatedTime, setEstimatedTime] = useState(15);
 
-    // Dynamic Stats Logic
     const stats = useMemo(() => {
         const completed = tasks.filter(t => t.completed).length;
         const total = tasks.length;

@@ -12,7 +12,6 @@ export interface Task {
 
 export interface TaskState {
     tasks: Task[];
-    setTasks: (tasks: Task[]) => void;
     addTask: (task: Task) => void;
     completeTask: (id: number) => void;
 }
